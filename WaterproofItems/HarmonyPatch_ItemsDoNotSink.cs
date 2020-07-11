@@ -34,7 +34,7 @@ namespace WaterproofItems
             {
                 if (debris != null) //if the debris exists
                 {
-                    if (debris.debrisType == Debris.DebrisType.OBJECT || debris.debrisType == Debris.DebrisType.ARCHAEOLOGY || debris.debrisType == Debris.DebrisType.RESOURCE || debris.item != null) //if this debris contains any kind of item
+                    if (debris.IsAnItem()) //if this debris represents an item
                     {
                         __result = false; //return false instead of the original result
                         return false; //skip the rest of the original method (note: this also skips any other patches on the method, depending on order)

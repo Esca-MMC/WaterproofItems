@@ -99,7 +99,7 @@ namespace WaterproofItems
             }
         }
 
-        /// <summary>The <see cref="Debris"/> most recently accessed by <see cref="GameLocation.drawDebris(SpriteBatch)"/>. Defaults to a "non-object" type.</summary>
+        /// <summary>The <see cref="Debris"/> most recently accessed by <see cref="GameLocation.drawDebris(SpriteBatch)"/>.</summary>
         public static Debris RecentDebris { get; set; } = null;
 
         /// <summary>Updates <see cref="RecentDebris"/> to refer to this <see cref="Debris"/>.</summary>
@@ -114,13 +114,7 @@ namespace WaterproofItems
 
         public static Vector2 GetFloatingPosition(NetPosition position)
         {
-            if //if this chunk's debris represents an item
-            (
-                RecentDebris.debrisType == Debris.DebrisType.OBJECT
-                || RecentDebris.debrisType == Debris.DebrisType.ARCHAEOLOGY
-                || RecentDebris.debrisType == Debris.DebrisType.RESOURCE
-                || RecentDebris.item != null
-            )
+            if (RecentDebris?.IsAnItem() == true) //if this chunk's debris represents an item
             {
                 Vector2 tilePosition = new Vector2((int)(position.X / 64.0) + 1, (int)(position.Y / 64.0) + 1); //get this chunk's tile position
                 if (Game1.player.currentLocation.doesTileSinkDebris((int)tilePosition.X, (int)tilePosition.Y, RecentDebris.debrisType)) //if this chunk is floating (i.e. should sink on its current tile)

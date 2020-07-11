@@ -18,7 +18,7 @@ namespace WaterproofItems
 
         public override void Entry(IModHelper helper)
         {
-            Instance = this; //provide a global reference to this mod's utilities
+            Instance = this; //provide a global reference to this mod's SMAPI utilities
 
             try
             {
@@ -41,10 +41,32 @@ namespace WaterproofItems
             HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID); //create this mod's Harmony instance
 
             HarmonyPatch_ItemsDoNotSink.ApplyPatch(harmony);
+            HarmonyPatch_FloatingItemsMoveTowardPlayer.ApplyPatch(harmony);
 
             HarmonyPatch_FloatingItemEffect.Instance = harmony; //pass the harmony instance to this patch (handled differently to support reuse after launch)
             if (Config?.EnableCosmeticFloatingEffect == true) //if the cosmetic effect is enabled
                 HarmonyPatch_FloatingItemEffect.ApplyPatch();
+        }
+    }
+
+    /// <summary>A static class containing any extensions shared by separate parts of this mod.</summary>
+    public static class Extensions
+    {
+        /// <summary>Indicates whether a <see cref="Debris"/> instance contains or represents an item.</summary>
+        /// <param name="debris">The debris instance.</param>
+        /// <returns>True if the debris contains or represents an item; otherwise false.</returns>
+        public static bool IsAnItem(this Debris debris)
+        {
+            if
+            (
+                debris.debrisType == Debris.DebrisType.OBJECT
+                || debris.debrisType == Debris.DebrisType.ARCHAEOLOGY
+                || debris.debrisType == Debris.DebrisType.RESOURCE
+                || debris.item != null
+            )
+                return true; //this is an item
+            else
+                return false; //this is NOT an item
         }
     }
 }
