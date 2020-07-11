@@ -47,7 +47,7 @@ namespace WaterproofItems
                 (
                     ModManifest,
                     "Floating items move toward players",
-                    "Check this box to make items in water slowly move toward the nearest player, making them easier to retrieve.\nIn multiplayer, this setting will only wor",
+                    "Check this box to make items in water move toward the nearest player, making them easier to retrieve.",
                     () => Config.FloatingItemsMoveTowardPlayers,
                     (bool val) => Config.FloatingItemsMoveTowardPlayers = val
                 );
