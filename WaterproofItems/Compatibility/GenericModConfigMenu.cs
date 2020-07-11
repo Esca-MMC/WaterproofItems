@@ -30,7 +30,7 @@ namespace WaterproofItems
                 (
                     ModManifest,
                     "Enable cosmetic floating effect",
-                    "Check this box to enable the cosmetic \"floating on waves\" effect on items in water.\nUncheck this box to disable the effect.\nDisabling this may improve performance on some systems.",
+                    "Check this box to enable the cosmetic \"floating on waves\" effect on items in water.\nThis is not very visible if \"Floating items move toward players\" is enabled.\nDisabling this might improve performance on some systems.",
                     () => Config.EnableCosmeticFloatingEffect,
                     (bool val) =>
                     {
@@ -47,7 +47,7 @@ namespace WaterproofItems
                 (
                     ModManifest,
                     "Floating items move toward players",
-                    "Check this box to make items in water move toward the nearest player, making them easier to retrieve.",
+                    "Check this box to make items in water always \"magnetize\" toward the nearest player (if they have free inventory space).\nItems will behave normally after reaching land.\nEnable this to retrieve floating items more easily.",
                     () => Config.FloatingItemsMoveTowardPlayers,
                     (bool val) => Config.FloatingItemsMoveTowardPlayers = val
                 );
