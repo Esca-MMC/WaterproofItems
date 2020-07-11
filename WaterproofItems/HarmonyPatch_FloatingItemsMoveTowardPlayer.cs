@@ -27,7 +27,7 @@ namespace WaterproofItems
 
         /// <summary>Causes item debris in water to ignore distance when finding nearby players.</summary>
         /// <param name="__instance">The <see cref="Debris"/> instance on which this method was called.</param>
-        /// <param name="__result">The original method's return value. True if the debris should sink, false otherwise.</param>
+        /// <param name="__result">The original method's return value. True if the provided player is in range.</param>
         public static void playerInRange_Postfix(Debris __instance, ref bool __result)
         {
             try
