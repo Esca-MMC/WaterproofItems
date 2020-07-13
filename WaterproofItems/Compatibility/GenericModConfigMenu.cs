@@ -35,9 +35,9 @@ namespace WaterproofItems
                     (bool val) =>
                     {
                         if (val) //if this is being set to true
-                            HarmonyPatch_FloatingItemEffect.ApplyPatch(); //apply this patch if necessary
+                            HarmonyPatch_FloatingItemVisualEffect.ApplyPatch(); //apply this patch if necessary
                         else //if this is being set to false
-                            HarmonyPatch_FloatingItemEffect.RemovePatch(); //remove this patch if necessary
+                            HarmonyPatch_FloatingItemVisualEffect.RemovePatch(); //remove this patch if necessary
 
                         Config.EnableCosmeticFloatingEffect = val;
                     }
@@ -46,10 +46,10 @@ namespace WaterproofItems
                 api.RegisterSimpleOption
                 (
                     ModManifest,
-                    "Floating items move toward players",
-                    "Check this box to make items in water always \"magnetize\" toward the nearest player (if they have free inventory space).\nItems will behave normally after reaching land.\nEnable this to retrieve floating items more easily.",
-                    () => Config.FloatingItemsMoveTowardPlayers,
-                    (bool val) => Config.FloatingItemsMoveTowardPlayers = val
+                    "Teleport floating items to player",
+                    "Check this box to make items in water teleport to the nearest player.\nEnabling this makes it easier to retrieve items.",
+                    () => Config.TeleportItemsOutOfWater,
+                    (bool val) => Config.TeleportItemsOutOfWater = val
                 );
 
 

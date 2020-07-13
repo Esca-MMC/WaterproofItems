@@ -63,9 +63,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HarmonyPatch_FloatingItemEffect.cs" />
-    <Compile Include="HarmonyPatch_FloatingItemsMoveTowardPlayer.cs" />
-    <Compile Include="HarmonyPatch_ItemsDoNotSink.cs" />
+    <Compile Include="HarmonyPatch_FloatingItemVisualEffect.cs" />
+    <Compile Include="HarmonyPatch_FloatingItemBehavior.cs" />
     <Compile Include="Compatibility\GenericModConfigMenu.cs" />
     <Compile Include="ModConfig.cs" />
     <Compile Include="ModEntry.cs" />

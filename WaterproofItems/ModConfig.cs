@@ -16,7 +16,7 @@ namespace WaterproofItems
     {
         /// <summary>If true, the "floating on waves" visual effect is applied to items in water.</summary>
         public bool EnableCosmeticFloatingEffect { get; set; } = true;
-        /// <summary>If true, items in water move toward the nearest player.</summary>
-        public bool FloatingItemsMoveTowardPlayers { get; set; } = true;
+        /// <summary>If true, items in water should teleport to the nearest player (if any).</summary>
+        public bool TeleportItemsOutOfWater { get; set; } = false;
     }
 }

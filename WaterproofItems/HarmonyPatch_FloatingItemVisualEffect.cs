@@ -16,7 +16,7 @@ using System.Reflection;
 namespace WaterproofItems
 {
     /// <summary>A Harmony patch that prevents item-containing debris sinking in water.</summary>
-    public static class HarmonyPatch_FloatingItemEffect
+    public static class HarmonyPatch_FloatingItemVisualEffect
     {
         /// <summary>If true, this patch is currently applied.</summary>
         private static bool IsPatchApplied { get; set; } = false;
@@ -29,11 +29,11 @@ namespace WaterproofItems
             if (IsPatchApplied || Instance == null) //if the patch is applied OR the static harmony instance is null
                 return; //do nothing
 
-            ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_FloatingItemEffect)}\": transpiling SDV method \"GameLocation.drawDebris(SpriteBatch)\".", LogLevel.Trace);
+            ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_FloatingItemVisualEffect)}\": transpiling SDV method \"GameLocation.drawDebris(SpriteBatch)\".", LogLevel.Trace);
 
             Instance.Patch(
                 original: AccessTools.Method(typeof(GameLocation), "drawDebris", new[] { typeof(SpriteBatch) }), //note: GameLocation.drawDebris access level is protected
-                transpiler: new HarmonyMethod(typeof(HarmonyPatch_FloatingItemEffect), nameof(drawDebris_Transpiler))
+                transpiler: new HarmonyMethod(typeof(HarmonyPatch_FloatingItemVisualEffect), nameof(drawDebris_Transpiler))
             );
 
             IsPatchApplied = true;
@@ -45,11 +45,11 @@ namespace WaterproofItems
             if (!IsPatchApplied || Instance == null) //if the patch is NOT applied OR the static harmony instance is null
                 return; //do nothing
 
-            ModEntry.Instance.Monitor.Log($"Removing Harmony patch \"{nameof(HarmonyPatch_FloatingItemEffect)}\": removing transpiler from SDV method \"GameLocation.drawDebris(SpriteBatch)\".", LogLevel.Trace);
+            ModEntry.Instance.Monitor.Log($"Removing Harmony patch \"{nameof(HarmonyPatch_FloatingItemVisualEffect)}\": removing transpiler from SDV method \"GameLocation.drawDebris(SpriteBatch)\".", LogLevel.Trace);
 
             Instance.Unpatch(
                 original: AccessTools.Method(typeof(GameLocation), "drawDebris", new[] { typeof(SpriteBatch) }), //note: GameLocation.drawDebris access level is protected
-                patch: AccessTools.Method(typeof(HarmonyPatch_FloatingItemEffect), nameof(drawDebris_Transpiler))
+                patch: AccessTools.Method(typeof(HarmonyPatch_FloatingItemVisualEffect), nameof(drawDebris_Transpiler))
             );
 
             IsPatchApplied = false;
@@ -60,11 +60,11 @@ namespace WaterproofItems
         {
             try
             {
-                MethodInfo updateTypeInfo = AccessTools.Method(typeof(HarmonyPatch_FloatingItemEffect), nameof(UpdateRecentDebrisType), new Type[] { typeof(Debris) }); 
+                MethodInfo updateTypeInfo = AccessTools.Method(typeof(HarmonyPatch_FloatingItemVisualEffect), nameof(UpdateRecentDebrisType), new Type[] { typeof(Debris) }); 
                 CodeInstruction updateTypeCode = new CodeInstruction(OpCodes.Call, updateTypeInfo); //an instruction that calls the preceding method on a Debris
 
                 FieldInfo chunkPositionInfo = AccessTools.Field(typeof(Chunk), nameof(Chunk.position));
-                MethodInfo floatingPositionInfo = AccessTools.Method(typeof(HarmonyPatch_FloatingItemEffect), nameof(GetFloatingPosition));
+                MethodInfo floatingPositionInfo = AccessTools.Method(typeof(HarmonyPatch_FloatingItemVisualEffect), nameof(GetFloatingPosition));
 
                 List<CodeInstruction> patched = new List<CodeInstruction>(instructions); //make a copy of the instructions to modify
 

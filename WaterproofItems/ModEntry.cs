@@ -40,12 +40,11 @@ namespace WaterproofItems
         {
             HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID); //create this mod's Harmony instance
 
-            HarmonyPatch_ItemsDoNotSink.ApplyPatch(harmony);
-            HarmonyPatch_FloatingItemsMoveTowardPlayer.ApplyPatch(harmony);
+            HarmonyPatch_FloatingItemBehavior.ApplyPatch(harmony);
 
-            HarmonyPatch_FloatingItemEffect.Instance = harmony; //pass the harmony instance to this patch (handled differently to support reuse after launch)
+            HarmonyPatch_FloatingItemVisualEffect.Instance = harmony; //pass the harmony instance to this patch (handled differently to support reuse after launch)
             if (Config?.EnableCosmeticFloatingEffect == true) //if the cosmetic effect is enabled
-                HarmonyPatch_FloatingItemEffect.ApplyPatch();
+                HarmonyPatch_FloatingItemVisualEffect.ApplyPatch();
         }
     }
 
