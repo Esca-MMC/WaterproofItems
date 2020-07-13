@@ -67,6 +67,7 @@
     <Compile Include="HarmonyPatch_FloatingItemBehavior.cs" />
     <Compile Include="Compatibility\GenericModConfigMenu.cs" />
     <Compile Include="ModConfig.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="ModEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
