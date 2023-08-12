@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.IO;
-using System.Linq;
+﻿using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Network;
-using Harmony;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Reflection.Emit;
 
 namespace WaterproofItems
 {
@@ -21,7 +17,7 @@ namespace WaterproofItems
         /// <summary>If true, this patch is currently applied.</summary>
         private static bool IsPatchApplied { get; set; } = false;
         /// <summary>The Harmony instance provided to this patch.</summary>
-        public static HarmonyInstance Instance { get; set; } = null;
+        public static Harmony Instance { get; set; } = null;
 
         /// <summary>Applies this Harmony patch to the game through the provided Harmony instance.</summary>
         public static void ApplyPatch()
@@ -60,7 +56,7 @@ namespace WaterproofItems
         {
             try
             {
-                MethodInfo updateTypeInfo = AccessTools.Method(typeof(HarmonyPatch_FloatingItemVisualEffect), nameof(UpdateRecentDebrisType), new Type[] { typeof(Debris) }); 
+                MethodInfo updateTypeInfo = AccessTools.Method(typeof(HarmonyPatch_FloatingItemVisualEffect), nameof(UpdateRecentDebrisType), new Type[] { typeof(Debris) });
                 CodeInstruction updateTypeCode = new CodeInstruction(OpCodes.Call, updateTypeInfo); //an instruction that calls the preceding method on a Debris
 
                 FieldInfo chunkPositionInfo = AccessTools.Field(typeof(Chunk), nameof(Chunk.position));
@@ -75,8 +71,8 @@ namespace WaterproofItems
                         x > 0 //if this isn't the first instruction
                         && patched[x].opcode == OpCodes.Call //and this instruction is a call
                         && (patched[x].operand as MethodInfo)?.ReturnType == typeof(Vector2) //and this call returns a Vector2
-                        && patched[x-1].opcode == OpCodes.Ldfld //and the previous instruction is a ldfld
-                        && patched[x-1].operand?.Equals(chunkPositionInfo) == true //and the previous instruction loads Chunk.position
+                        && patched[x - 1].opcode == OpCodes.Ldfld //and the previous instruction is a ldfld
+                        && patched[x - 1].operand?.Equals(chunkPositionInfo) == true //and the previous instruction loads Chunk.position
                     )
                     {
                         patched[x] = new CodeInstruction(OpCodes.Call, floatingPositionInfo); //replace the current instruction with a call to GetFloatingPosition
@@ -117,7 +113,7 @@ namespace WaterproofItems
             if (RecentDebris?.IsAnItem() == true) //if this chunk's debris represents an item
             {
                 Vector2 tilePosition = new Vector2((int)(position.X / 64.0) + 1, (int)(position.Y / 64.0) + 1); //get this chunk's tile position
-                if (Game1.player.currentLocation.doesTileSinkDebris((int)tilePosition.X, (int)tilePosition.Y, RecentDebris.debrisType)) //if this chunk is floating (i.e. should sink on its current tile)
+                if (Game1.player.currentLocation.doesTileSinkDebris((int)tilePosition.X, (int)tilePosition.Y, RecentDebris.debrisType.Value)) //if this chunk is floating (i.e. should sink on its current tile)
                 {
                     int offset = (int)(Math.Sin((double)((Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 2500.0) + (position.X * 5)) / 2500.0 * (2.0 * Math.PI)) * 6.0); //calculate this chunk's offset
                     return new Vector2((int)position.X, position.Y + offset); //return the chunk's position with the offset added to its Y value

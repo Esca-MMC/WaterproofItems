@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using HarmonyLib;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using Harmony;
+using System;
 
 namespace WaterproofItems
 {
@@ -38,7 +31,7 @@ namespace WaterproofItems
         /// <summary>Applies any Harmony patches used by this mod.</summary>
         private void ApplyHarmonyPatches()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID); //create this mod's Harmony instance
+            Harmony harmony = new Harmony(ModManifest.UniqueID); //create this mod's Harmony instance
 
             HarmonyPatch_FloatingItemBehavior.ApplyPatch(harmony);
 

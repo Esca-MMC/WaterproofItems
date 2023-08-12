@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using Harmony;
+﻿using StardewValley;
 
 namespace WaterproofItems
 {
@@ -21,9 +12,9 @@ namespace WaterproofItems
         {
             if
             (
-                debris.debrisType == Debris.DebrisType.OBJECT
-                || debris.debrisType == Debris.DebrisType.ARCHAEOLOGY
-                || debris.debrisType == Debris.DebrisType.RESOURCE
+                debris.debrisType.Value == Debris.DebrisType.OBJECT
+                || debris.debrisType.Value == Debris.DebrisType.ARCHAEOLOGY
+                || debris.debrisType.Value == Debris.DebrisType.RESOURCE
                 || debris.item != null
             )
                 return true; //this is an item

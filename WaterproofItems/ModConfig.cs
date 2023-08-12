@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using Harmony;
-
-namespace WaterproofItems
+﻿namespace WaterproofItems
 {
     /// <summary>A collection of this mod's config.json file settings.</summary>
     public class ModConfig
