@@ -64,7 +64,7 @@ namespace WaterproofItems
                         Config.EnableCosmeticFloatingEffect = val;
                     },
                     name: () => "Enable floating animation",
-                    tooltip: () => "If enabled, items on water will have a cosmetic floating animation.\nIf floating items cause your game to slow down, try disabling this."
+                    tooltip: () => "If enabled, items on water will have a cosmetic floating animation.\n\nIf floating items cause your game to slow down, try disabling this."
                 );
 
                 api.AddBoolOption
@@ -73,7 +73,7 @@ namespace WaterproofItems
                     getValue: () => Config.TeleportItemsOutOfWater,
                     setValue: (bool val) => Config.TeleportItemsOutOfWater = val,
                     name: () => "Teleport floating items to player",
-                    tooltip: () => "Check this box to make items in water teleport to the nearest player whenever possible.\nEnabling this makes it easier to retrieve items."
+                    tooltip: () => "If enabled, items on water will immediately teleport to the nearest player."
                     
                 );
             }
