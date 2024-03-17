@@ -36,7 +36,7 @@ namespace WaterproofItems
             HarmonyPatch_FloatingItemBehavior.ApplyPatch(harmony);
 
             HarmonyPatch_FloatingItemVisualEffect.Instance = harmony; //pass the harmony instance to this patch (handled differently to support reuse after launch)
-            if (Config?.EnableCosmeticFloatingEffect == true) //if the cosmetic effect is enabled
+            if (Config?.FloatingAnimation == true) //if the floating animation is enabled
                 HarmonyPatch_FloatingItemVisualEffect.ApplyPatch();
         }
     }

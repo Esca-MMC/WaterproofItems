@@ -10,4 +10,14 @@
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="i18n\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="i18n\default.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

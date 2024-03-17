@@ -1,6 +1,7 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using System;
+using System.ComponentModel;
 
 namespace WaterproofItems
 {
@@ -52,7 +53,7 @@ namespace WaterproofItems
                 api.AddBoolOption
                 (
                     mod: ModManifest,
-                    getValue: () => ModEntry.Config.EnableCosmeticFloatingEffect,
+                    getValue: () => ModEntry.Config.FloatingAnimation,
                     setValue: (bool val) =>
                     {
                         if (val) //if this is being set to true
@@ -60,10 +61,10 @@ namespace WaterproofItems
                         else //if this is being set to false
                             HarmonyPatch_FloatingItemVisualEffect.RemovePatch(); //remove this patch if necessary
 
-                        Config.EnableCosmeticFloatingEffect = val;
+                        Config.FloatingAnimation = val;
                     },
-                    name: () => "Enable floating animation",
-                    tooltip: () => "If enabled, items on water will have a cosmetic floating animation.\n\nIf floating items cause your game to slow down, try disabling this."
+                    name: () => ModEntry.Instance.Helper.Translation.Get("FloatingAnimation.Name"),
+                    tooltip: () => ModEntry.Instance.Helper.Translation.Get("FloatingAnimation.Desc")
                 );
 
                 api.AddBoolOption
@@ -71,8 +72,8 @@ namespace WaterproofItems
                     mod: ModManifest,
                     getValue: () => Config.TeleportItemsOutOfWater,
                     setValue: (bool val) => Config.TeleportItemsOutOfWater = val,
-                    name: () => "Teleport floating items to player",
-                    tooltip: () => "If enabled, items on water will immediately teleport to the nearest player."
+                    name: () => ModEntry.Instance.Helper.Translation.Get("TeleportItemsOutOfWater.Name"),
+                    tooltip: () => ModEntry.Instance.Helper.Translation.Get("TeleportItemsOutOfWater.Desc")
 
                 );
             }
