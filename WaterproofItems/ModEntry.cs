@@ -25,7 +25,7 @@ namespace WaterproofItems
 
             ApplyHarmonyPatches();
 
-            Helper.Events.GameLoop.GameLaunched += EnableGMCM;
+            Helper.Events.Display.RenderedActiveMenu += GMCM.Enable;
         }
 
         /// <summary>Applies any Harmony patches used by this mod.</summary>
