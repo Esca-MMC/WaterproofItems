@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Network;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -51,7 +50,11 @@ namespace WaterproofItems
             IsPatchApplied = false;
         }
 
-        /// <summary>Replaces calls to <see cref="Chunk.position"/> with <see cref="GetFloatingPosition(Chunk)"/> and inserts calls to <see cref="UpdateRecentDebrisType(Debris)"/> before them.</summary>
+        /// <summary>Implements a floating animation for any debris items on water.</summary>
+        /// <remarks>
+        /// This transpiler inserts a call to <see cref="GetFloatingPosition(Vector2)"/> whenever this method reads <see cref="Chunk.position"/>, altering it for the animation without actually changing the chunk's position.
+        /// This also inserts a call to <see cref="UpdateRecentDebrisType(Debris)"/> early on, which is a hacky method of checking the current debris type during the animation.
+        /// </remarks>
         public static IEnumerable<CodeInstruction> drawDebris_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             try
@@ -63,19 +66,18 @@ namespace WaterproofItems
                 MethodInfo floatingPositionInfo = AccessTools.Method(typeof(HarmonyPatch_FloatingItemVisualEffect), nameof(GetFloatingPosition));
 
                 List<CodeInstruction> patched = new List<CodeInstruction>(instructions); //make a copy of the instructions to modify
-
                 for (int x = patched.Count - 1; x >= 0; x--) //for each instruction (looping backward)
                 {
                     if //if this instruction is getting a Vector2 from Chunk.position
                     (
                         x > 0 //if this isn't the first instruction
-                        && patched[x].opcode == OpCodes.Call //and this instruction is a call
+                        && (patched[x].opcode == OpCodes.Callvirt || patched[x].opcode == OpCodes.Call) //and this instruction is a call (note: whether this is virtual or not has varied between versions)
                         && (patched[x].operand as MethodInfo)?.ReturnType == typeof(Vector2) //and this call returns a Vector2
                         && patched[x - 1].opcode == OpCodes.Ldfld //and the previous instruction is a ldfld
                         && patched[x - 1].operand?.Equals(chunkPositionInfo) == true //and the previous instruction loads Chunk.position
                     )
                     {
-                        patched[x] = new CodeInstruction(OpCodes.Call, floatingPositionInfo); //replace the current instruction with a call to GetFloatingPosition
+                        patched.Insert(x + 1, new CodeInstruction(OpCodes.Call, floatingPositionInfo)); //insert a call to GetFloatingPosition after the current instruction
                     }
                     else if //if this instruction is getting a Debris
                     (
@@ -108,7 +110,7 @@ namespace WaterproofItems
             return debris;
         }
 
-        public static Vector2 GetFloatingPosition(NetPosition position)
+        public static Vector2 GetFloatingPosition(Vector2 position)
         {
             if (RecentDebris?.IsAnItem() == true) //if this chunk's debris represents an item
             {
@@ -121,7 +123,7 @@ namespace WaterproofItems
             }
 
             //if this chunk is NOT floating
-            return position.Value; //return the chunk's actual position
+            return position; //return the chunk's actual position
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using System;
-using System.Collections.Generic;
 
 namespace WaterproofItems
 {
@@ -74,7 +73,7 @@ namespace WaterproofItems
                     setValue: (bool val) => Config.TeleportItemsOutOfWater = val,
                     name: () => "Teleport floating items to player",
                     tooltip: () => "If enabled, items on water will immediately teleport to the nearest player."
-                    
+
                 );
             }
             catch (Exception ex)
