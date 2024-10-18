@@ -63,6 +63,8 @@ namespace WaterproofItems
                 CodeInstruction updateTypeCode = new CodeInstruction(OpCodes.Call, updateTypeInfo); //an instruction that calls the preceding method on a Debris
 
                 FieldInfo chunkPositionInfo = AccessTools.Field(typeof(Chunk), nameof(Chunk.position));
+                MethodInfo chunkVisualPositionInfo = AccessTools.Method(typeof(Chunk), nameof(Chunk.GetVisualPosition));
+
                 MethodInfo floatingPositionInfo = AccessTools.Method(typeof(HarmonyPatch_FloatingItemVisualEffect), nameof(GetFloatingPosition));
 
                 List<CodeInstruction> patched = new List<CodeInstruction>(instructions); //make a copy of the instructions to modify
@@ -75,6 +77,14 @@ namespace WaterproofItems
                         && (patched[x].operand as MethodInfo)?.ReturnType == typeof(Vector2) //and this call returns a Vector2
                         && patched[x - 1].opcode == OpCodes.Ldfld //and the previous instruction is a ldfld
                         && patched[x - 1].operand?.Equals(chunkPositionInfo) == true //and the previous instruction loads Chunk.position
+                    )
+                    {
+                        patched.Insert(x + 1, new CodeInstruction(OpCodes.Call, floatingPositionInfo)); //insert a call to GetFloatingPosition after the current instruction
+                    }
+                    else if //if this instruction is getting Chunk.GetVisualPosition
+                    (
+                        (patched[x].opcode == OpCodes.Callvirt || patched[x].opcode == OpCodes.Call) //if this instruction is a call
+                        && patched[x].operand?.Equals(chunkVisualPositionInfo) == true //and this call is to Chunk.GetVisualPosition
                     )
                     {
                         patched.Insert(x + 1, new CodeInstruction(OpCodes.Call, floatingPositionInfo)); //insert a call to GetFloatingPosition after the current instruction
